@@ -1,0 +1,21 @@
+SELECT 
+    track,
+    CASE 
+        WHEN finished = true THEN 2
+        WHEN cancelled = true THEN -1
+        WHEN inDelivery = true THEN 1
+        ELSE 0
+    END AS status
+FROM Orders;
+
+SELECT 
+    c.login,
+    COUNT(o.id) AS in_delivery_orders_count
+FROM 
+    Couriers c
+LEFT JOIN 
+    Orders o ON c.id = o.id AND o.inDelivery = true
+GROUP BY 
+    c.login
+ORDER BY 
+    in_delivery_orders_count DESC;
